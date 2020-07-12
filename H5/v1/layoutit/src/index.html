@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>病人信息</title>
+
+	
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+	<!-- IOT链接 -->
+	<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+	<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+	<script type="text/javascript" src="http://iot.emlab.net/student/common/js/vconsole.min.js"></script>
+
+	<!-- 样式引入 -->
+	<script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="changeByTime.js"></script>
+	<script src="alert.js"></script>
+	<link rel="stylesheet" type="text/css" href="total.css" /> 
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+	<!-- JavaScript· -->
+	<script type="text/javascript">
+		// warning threshold for vital signs
+		var o2_up = 100;
+		var o2_low = 94;
+		var hr_up = 100;
+		var hr_low = 60;
+		var rr_up = 30;
+		var rr_low = 12;
+		var temp_up = 37;
+		var temp_low = 36;
+		var co2_up = 1000;
+		var co2_low = 450;
+		var alc_up = 1000;
+		var alc_low = 450;
+		// string of vital signs
+		var o2_up_str = 'o2_up';
+		var hr_up_str = 'hr_up';
+		var rr_up_str = 'rr_up';
+		var temp_up_str = 'temp_up';
+		var co2_up_str = 'co2_up';
+		var alc_up_str = 'alc_up';
+		var o2_low_str = 'o2_low';
+		var hr_low_str = 'hr_low';
+		var rr_low_str = 'rr_low';
+		var temp_low_str = 'temp_low';
+		var co2_low_str = 'co2_low';
+		var alc_low_str = 'alc_low';
+
+
+		var time = Date.now();
+		var o2;
+		var hr;
+		var rr;
+		var temp;
+		document.addEventListener("applicationReady", function (e) {
+				new VConsole();
+				document.getElementById("data_tem").innerHTML= 1;
+				mx.watchDeviceStatus(function (res) {
+					
+					if(res) {
+	//                        o2 = res.o2;
+	//                        bre = res.bre;
+							document.getElementById("data_o2").innerHTML = 1;
+							co2 = res.co2_eq_ppm;
+	//						  acl = res.acl;
+	//						  tem = res.tem;
+	//						  bp = res.bp;
+							document.getElementById("data_bp").innerHTML= 1; 
+	//                       document.getElementById("data_o2").innerHTML = o2;
+	//                       document.getElementById("data_bre").innerHTML = bre;
+							document.getElementById("data_co2").innerHTML= co2;
+							
+							document.getElementById("data_alc").innerHTML= 1;
+	//		   				document.getElementById("data_tem").innerHTML= tem;
+	//		   				document.getElementById("data_bp").innerHTML= bp; 
+						}else{
+							document.getElementById("data_tem").innerHTML= 2;
+						}
+				});
+			document.getElementById("data_tem").innerHTML= 3;
+			});
+		function change()
+		{
+			   document.getElementById("data_o2").innerHTML = (Math.random()*(98.5-96+1)+96+Math.random()*(1)-Math.random()*(2) ).toFixed(2);
+			   o2 =  document.getElementById("data_o2").innerHTML;
+			 
+			   document.getElementById("data_bre").innerHTML = ~~(Math.random()*(70-60+1)+60);
+			   document.getElementById("data_co2").innerHTML= ~~(Math.random()*(500-400+1)+400);
+			   document.getElementById("data_alc").innerHTML= ~~((Math.random()*(50)+400));
+			   document.getElementById("data_tem").innerHTML= (Math.random()*(0.1)+36.5).toFixed(2);
+			   document.getElementById("data_bp").innerHTML= 132;
+
+			   hr = document.getElementById("data_bre").innerHTML;
+			   temp = document.getElementById("data_tem").innerHTML
+
+			   checkthreshold();
+			//    if(o2>98) {
+			// 	Popup.alert("患者血氧饱和度超标")
+			//    }
+			//    var o2_up_str = 'o2_up';
+			// 	localStorage.setItem(o2_up_str,o2_up.toString); 
+	//				   document.getElementById("data_bp").innerHTML= ~~(Math.random()*(15-12+1)+12);
+		}
+		function checkthreshold(){
+			if(o2>o2_up || o2<o2_low){
+				Popup.alert("患者血氧饱和度异常！"+o2);
+			}
+			if(hr>hr_up || hr<hr_low){
+				Popup.alert("患者心率异常！"+hr);
+			}
+			if(temp>temp_up || temp<temp_low){
+				Popup.alert("患者体温异常！"+hr);
+			}
+			
+		
+		}
+		var newdata;
+		function cha( )
+		{
+			newdata =  setInterval(change,"1000");
+		}
+		function local_to_global(){
+			localStorage.setItem(o2_up_str,o2_up); 
+			localStorage.setItem(hr_up_str,hr_up); 
+			localStorage.setItem(rr_up_str,rr_up); 
+			localStorage.setItem(temp_up_str,temp_up); 
+			localStorage.setItem(co2_up_str,co2_up); 
+			localStorage.setItem(alc_up_str,alc_up);
+			
+			localStorage.setItem(o2_low_str,o2_low); 
+			localStorage.setItem(hr_low_str,hr_low); 
+			localStorage.setItem(rr_low_str,rr_low); 
+			localStorage.setItem(temp_low_str,temp_low); 
+			localStorage.setItem(co2_low_str,co2_low); 
+			localStorage.setItem(alc_low_str,alc_low);  
+
+		}
+		function modify_threshold()
+		{
+			
+			o2_up = document.getElementById("o2_up_warn").value;
+			o2_low = document.getElementById("o2_low_warn").value;
+			hr_up = document.getElementById("hr_up_warn").value;
+			hr_low = document.getElementById("hr_low_warn").value;
+			rr_up = document.getElementById("rr_up_warn").value;
+			rr_low = document.getElementById("rr_low_warn").value;
+			temp_up = document.getElementById("temp_up_warn").value;
+			temp_low = document.getElementById("temp_low_warn").value;
+			co2_up = document.getElementById("co2_up_warn").value;
+			co2_low = document.getElementById("co2_low_warn").value;
+			alc_up = document.getElementById("alc_up_warn").value;
+			alc_low = document.getElementById("alc_low_warn").value;
+			local_to_global();
+			alert(o2_up);
+				
+		}
+		function ini(){
+			document.getElementById("o2_up_warn").value = o2_up;
+			document.getElementById("o2_low_warn").value = o2_low;
+			document.getElementById("hr_up_warn").value = hr_up;
+			document.getElementById("hr_low_warn").value = hr_low;
+			document.getElementById("rr_up_warn").value = rr_up;
+			document.getElementById("rr_low_warn").value = rr_low;
+			document.getElementById("temp_up_warn").value = temp_up;
+			document.getElementById("temp_low_warn").value = temp_low;
+			document.getElementById("co2_up_warn").value = co2_up;
+			document.getElementById("co2_low_warn").value = co2_low;
+			document.getElementById("alc_up_warn").value = alc_up;
+			document.getElementById("alc_low_warn").value = alc_low;
+			local_to_global();
+		}
+	
+	</script>
+  </head>
+  <body onload="ini()">
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				 
+				<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="navbar-nav">
+						<li class="nav-item active">
+							 <a class="nav-link" href="#">实时数据 <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							 <a class="nav-link" href="#">历史数据</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" href="#">监测预警</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Profile</a>
+						</li>
+					</ul>
+					
+				</div>
+			</nav>
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+
+			<h3>
+				设置预警阈值
+			</h3>
+			<table name="threshold_form" class="table">
+				<tbody>
+					<tr class="table-active">
+						<th></th>
+						<th>
+							预警上限
+						</th>
+						<th>
+							预警下限
+						</th>
+					</tr>
+					<tr>
+						<th>
+							血氧
+						</th>
+						<td>
+							<input id="o2_up_warn" class="input-warn" value=90 type="number" name="quantity">
+						</td>
+						<td>
+							<input id="o2_low_warn" class="input-warn" type="number" name="quantity">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							心率
+						</th>
+						<td>
+							<input id="hr_up_warn" class="input-warn" type="number" name="quantity">
+						</td>
+						<td>
+							<input id="hr_low_warn" class="input-warn" type="number" name="quantity">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							呼吸频率
+						</th>
+						<td>
+							<input id="rr_up_warn" class="input-warn" type="number" name="quantity">
+						</td>
+						<td>
+							<input id="rr_low_warn" class="input-warn" type="number" name="quantity">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							体温
+						</th>
+						<td>
+							<input id="temp_up_warn" class="input-warn" type="number" name="quantity">
+						</td>
+						<td>
+							<input id="temp_low_warn" class="input-warn" type="number" name="quantity">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							二氧化碳
+						</th>
+						<td>
+							<input id="co2_up_warn" class="input-warn" type="number" name="quantity">
+						</td>
+						<td>
+							<input id="co2_low_warn" class="input-warn" type="number" name="quantity">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							酒精
+						</th>
+						<td>
+							<input id="alc_up_warn" class="input-warn" type="number" name="quantity">
+						</td>
+						<td>
+							<input id="alc_low_warn" class="input-warn" type="number" name="quantity">
+						</td>
+					</tr>
+					
+				</tbody>
+			</table> 
+			<button id ="modify_button" type="button" class="btn btn-outline-success"  onclick="modify_threshold()">
+				确认修改
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+
+			<h3>
+				实时体征数据
+			</h3>
+			<table class="table">
+				<tbody>
+					<tr class="table-active">
+						<th>
+							血氧饱和度(%)
+						</th>
+						<th>
+							心率(bpm)
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<div id="data_o2">0</div>
+						</td>
+						<td>
+							<div id="data_bre">0</div>
+						</td>
+					</tr>
+					<tr class="table-active">
+						<th>
+							呼吸频率(bpm)
+						</th>
+						<th>
+							体温(℃)
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<div id="data_bp">0</div>
+						</td>
+						<td>
+							<div id="data_tem">0</div>
+						</td>
+					</tr>
+					<tr class="table-active">
+						<th>
+							二氧化碳(ppm)
+						</th>
+						<th>
+							酒精(ppb)
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<div id="data_co2">0</div>
+						</td>
+						<td>
+							<div id="data_alc">0</div>
+						</td>
+					</tr>
+					
+					
+				</tbody>
+			</table> 
+			<button type="button" class="btn  btn-outline-primary" onclick="cha()">
+				开始采集
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<h3>
+				历史体征数据
+			</h3> 
+			<a href="#" id = "initShow_o2" class="btn btn-lg btn-block btn-info" type="button" onclick="myFunction_o2(true)">血氧饱和度</a> 
+			<button  id = "initHidden_o2" class="btn_he" type="button" onclick="myFunction_o2(false)">血氧饱和度</button>	
+			<div id="o2" class="graph">
+			</div>
+			<a href="#" id = "initShow_bre" class="btn btn-lg btn-block btn-info" type="button" onclick="myFunction_bre(true)">心率</a> 
+			<button  id = "initHidden_bre" class="btn_he" type="button" onclick="myFunction_bre(false)">心率</button>	
+			<div id="bre" class="graph">
+			</div>
+			<a href="#" id = "initShow_bp" class="btn btn-lg btn-block btn-info" type="button" onclick="myFunction_bp(true)">呼吸频率</a> 
+			<button  id = "initHidden_bp" class="btn_he" type="button" onclick="myFunction_bp(false)">呼吸</button>	
+			<div id="bp" class="graph">
+			</div>
+			<a href="#" id = "initShow_tem" class="btn btn-lg btn-block btn-info" type="button" onclick="myFunction_tem(true)">体温</a> 
+			<button  id = "initHidden_tem" class="btn_he" type="button" onclick="myFunction_tem(false)">温度</button>	
+			<div id="tem" class="graph">
+			</div>
+			<a href="#" id = "initShow_co2" class="btn btn-lg btn-block btn-info" type="button" onclick="myFunction_co2(true)">二氧化碳浓度</a> 
+			<button  id = "initHidden_co2" class="btn_he" type="button" onclick="myFunction_co2(false)">二氧化碳</button>	
+			<div id="co2" class="graph">
+			</div>
+			<a href="#" id = "initShow_alc" class="btn btn-lg btn-block btn-info" type="button" onclick="myFunction_alc(true)">酒精浓度</a>
+			<button  id = "initHidden_alc" class="btn_he" type="button" onclick="myFunction_alc(false)">酒精</button>	
+			<div id="alc" class="graph">
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+	<script type="text/javascript">
+		function fn() {
+			console.log('催定?除？')
+		}
+		document.getElementById("alert").addEventListener("click", function() {
+			Popup.alert("患者血氧饱和度超标")
+		})
+		document.getElementById("confirm").addEventListener("click", function() {
+			Popup.confirm("催定?除？", fn)
+		})
+	</script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
